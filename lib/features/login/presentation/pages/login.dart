@@ -1,150 +1,113 @@
 // ignore_for_file: must_be_immutable
 
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:promina_task/config/routes/routes.dart';
-import 'package:promina_task/core/enums/screen_status.dart';
-import 'package:promina_task/features/login/data/data_source/remote/remote_login_ds_impl.dart';
-import 'package:promina_task/features/login/data/repository/login_repo_impl.dart';
-import 'package:promina_task/features/login/domain/usecases/login_usecase.dart';
-import 'package:promina_task/features/login/presentation/bloc/bloc/login_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:todo/config/routes/routes.dart';
+import 'package:todo/core/enums/screen_status.dart';
+import 'package:todo/features/login/data/datasource/remote/remote_login_ds_impl.dart';
+import 'package:todo/features/login/data/respository/login_repo_impl.dart';
+import 'package:todo/features/login/domain/usecases/login_usecase.dart';
+
+import '../../../../config/theme/textStyles.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/app_text_button.dart';
+import '../../../../core/utils/app_text_formfield.dart';
+import '../bloc/login_bloc.dart';
 
 class LoginScreen extends StatelessWidget {
+  LoginScreen({super.key});
+
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-          image: DecorationImage(
-              fit: BoxFit.fill,
-              image: AssetImage("assets/images/loginBG.png"))),
-      child: BlocProvider(
-        create: (context) =>
-            LoginBloc(LoginUseCase(LoginRepoImpl(RemoteLoginDSImpl()))),
-        child: BlocConsumer<LoginBloc, LoginState>(
-          listener: (context, state) {
-            if (state.status == RequestStatus.loading) {
-              showDialog(
-                context: context,
-                builder: (context) =>
-                    const Center(child: CircularProgressIndicator()),
-              );
-            }
-            if (state.status == RequestStatus.success) {
-              Navigator.pushNamed(context, RoutesName.home);
-            }
-          },
-          builder: (context, state) {
-            return Scaffold(
-              backgroundColor: Colors.transparent,
-              body: Center(
+    return BlocProvider(
+      create: (context) =>
+          LoginBloc(LoginUseCase(LoginRepoImpl(RemoteLoginDSImpl()))),
+      child: BlocConsumer<LoginBloc, LoginState>(
+        listener: (context, state) {
+          if (state.status == RequestStatus.loading) {
+            showDialog(
+              context: context,
+              builder: (context) => const AlertDialog(
+                title: Center(child: CircularProgressIndicator()),
+              ),
+            );
+          } else if (state.status == RequestStatus.success) {
+            Navigator.pushNamedAndRemoveUntil(
+                context, RoutesName.home, (route) => false);
+          } else if (state.status == RequestStatus.failure) {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text("Error"),
+                content: Text(state.failures?.message ?? ""),
+              ),
+            );
+          }
+        },
+        builder: (context, state) {
+          return Scaffold(
+              backgroundColor: AppColors.backgroundColor,
+              appBar: AppBar(
+                backgroundColor: AppColors.mainColor,
+                title: Text(
+                  'Taskaty',
+                  style: GoogleFonts.elMessiri(
+                    textStyle: TextStyles.appName,
+                  ),
+                ),
+              ),
+              body: Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      height: 200.h,
+                    Text(
+                      'Login',
+                      style: TextStyles.appName,
                     ),
-                    Stack(
-                      alignment: Alignment.topCenter,
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(30.r),
-                          child: BackdropFilter(
-                            filter:
-                                ImageFilter.blur(sigmaX: 20.0, sigmaY: 20.0),
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 350.w,
-                              height: 420.h,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 320.w,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 30.0.r),
-                            child: Column(
-                              children: [
-                                Text(
-                                  "LOG IN",
-                                  style: TextStyle(
-                                      color: const Color(0xff4A4A4A),
-                                      fontSize: 30.sp,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  height: 30.h,
-                                ),
-                                TextFormField(
-                                  controller: emailController,
-                                  decoration: InputDecoration(
-                                      label: const Text("User Name"),
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(30.r),
-                                        borderSide: const BorderSide(
-                                            color: Colors.white),
-                                      )),
-                                ),
-                                SizedBox(
-                                  height: 30.h,
-                                ),
-                                TextFormField(
-                                  controller: passwordController,
-                                  decoration: InputDecoration(
-                                      label: const Text("Password"),
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(30.r),
-                                        borderSide: const BorderSide(
-                                            color: Colors.white),
-                                      )),
-                                ),
-                                SizedBox(
-                                  height: 30.h,
-                                ),
-                                Container(
-                                  height: 60.h,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20.r),
-                                      color: const Color(0xff7BB3FF)),
-                                  child: MaterialButton(
-                                    onPressed: () {
-                                      BlocProvider.of<LoginBloc>(context).add(
-                                          LoginButtonEvent(
-                                              "gladys.green@example.net",
-                                              "password"));
-                                    },
-                                    child: Text("SUBMIT",
-                                        style: TextStyle(
-                                            fontSize: 24.sp,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold)),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    AppTextFormField(
+                      hintText: "Email",
+                      controller: emailController,
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    AppTextFormField(
+                      hintText: "Password",
+                      isObscureText: true,
+                      controller: passwordController,
+                    ),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    AppTextButton(
+                        buttonText: "Login",
+                        textStyle: TextStyles.buttonStyle,
+                        onPressed: () {
+                          // BlocProvider.of<LoginBloc>(context).add(
+                          //     LoginButtonEvent("emily.johnson@x.dummyjson.com",
+                          //         "emilyspass"));
+                          Navigator.pushReplacementNamed(
+                              context, RoutesName.home);
+                        }),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    SizedBox(
+                      height: 100.h,
                     ),
                   ],
                 ),
-              ),
-            );
-          },
-        ),
+              ));
+        },
       ),
     );
   }

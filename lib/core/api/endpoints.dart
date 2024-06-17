@@ -1,5 +1,5 @@
 class EndPoints {
-  static const String login = "auth/login";
-  static const String gallery = "my-gallery";
-  static const String addImage = "upload";
+  static const String login = 'https://dummyjson.com/todos';
+  static const String todos = 'https://dummyjson.com/auth/login';
+  // static const String pagination = "upload";
 }

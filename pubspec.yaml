@@ -1,4 +1,4 @@
-name: promina_task
+name: todo
 description: "A new Flutter project."
 
 publish_to: "none"
@@ -18,9 +18,12 @@ dependencies:
   dartz: ^0.10.1
   flutter_bloc: ^8.1.5
   bloc: ^8.1.4
-  image_picker: ^1.1.1
-  http: ^1.2.1
+  date_picker_timeline: ^1.2.6
+  flutter_slidable: ^3.1.0
   shared_preferences: ^2.2.3
+  firebase_core: ^3.1.0
+  cloud_firestore: ^5.0.1
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:

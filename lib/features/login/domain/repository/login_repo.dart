@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:promina_task/core/errors/failures.dart';
-import 'package:promina_task/features/login/domain/entity/response_entity.dart';
+import 'package:todo/core/errors/failures.dart';
+import 'package:todo/features/login/data/models/login_response.dart';
 
 abstract class LoginRepo {
-  Future<Either<Failures, ResponseEntity>> login(String email, String password);
+  Future<Either<Failures, LoginResponse>> login(String email, String password);
 }

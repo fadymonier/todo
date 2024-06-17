@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:promina_task/core/utils/constants.dart';
+import 'package:todo/core/api/endpoints.dart';
 
 class ApiManager {
   late Dio dio;
@@ -9,15 +9,12 @@ class ApiManager {
   }
 
   Future<Response> getData(
-      {required String endPoint,
-      Map<String, dynamic>? headers,
-      Map<String, dynamic>? queryParam}) {
-    return dio.get(AppConstants.baseURL + endPoint,
-        queryParameters: queryParam, options: Options(headers: headers));
+      {required String endPint, Map<String, dynamic>? queryParam}) {
+    return dio.get(EndPoints.login, queryParameters: queryParam);
   }
 
   Future<Response> postData(
       {required String endPoint, Map<String, dynamic>? body}) {
-    return dio.post(AppConstants.baseURL + endPoint, data: body);
+    return dio.post(EndPoints.login, data: body);
   }
 }

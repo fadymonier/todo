@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:promina_task/features/home/presentation/pages/home.dart';
-import 'package:promina_task/features/login/presentation/pages/login.dart';
+import 'package:todo/features/home/presentation/pages/home.dart';
+
+import '../../features/login/presentation/pages/login.dart';
 
 class RoutesName {
   static const String login = "/";
@@ -16,7 +17,7 @@ class AppRoutes {
         );
       case RoutesName.home:
         return MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
+          builder: (context) => HomeScreen(),
         );
       default:
         return MaterialPageRoute(

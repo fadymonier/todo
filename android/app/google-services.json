@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "298156892595",
+    "project_id": "todo-5e6b2",
+    "storage_bucket": "todo-5e6b2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:298156892595:android:aa4d14a3d20f0c18e9abc6",
+        "android_client_info": {
+          "package_name": "com.example.promina_task"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAY9DDbINS7NhR0nLvtrMSNeuQaMApDHgQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
